@@ -21,10 +21,10 @@ public class Boid : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         FlyToCenterOfMass();
         MatchVelocity();
         MaintainSeparation();
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         StayInbounds();
     }
 
@@ -74,7 +74,7 @@ public class Boid : MonoBehaviour
         {
             avgVelocity /= numBoidsInVision;
             Vector2 velocityDiff = avgVelocity - myVelocity;
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity + adjustment * Time.deltaTime * velocityDiff, maxSpeed);
+            rb.velocity += adjustment * Time.deltaTime * velocityDiff;
         }
     }
 
@@ -94,7 +94,7 @@ public class Boid : MonoBehaviour
                 }
             }
         }
-        rb.velocity = Vector2.ClampMagnitude(rb.velocity + adjustment * Time.deltaTime * separationForce, maxSpeed);
+        rb.velocity += adjustment * Time.deltaTime * separationForce;
     }
 
     private void StayInbounds()
