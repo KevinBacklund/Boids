@@ -12,10 +12,9 @@ public class Boid : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector3(
+        rb.velocity = new Vector2(
             Random.Range(-0.4f * maxSpeed, 0.4f * maxSpeed),
-            Random.Range(-0.4f * maxSpeed, 0.4f * maxSpeed),
-            0
+            Random.Range(-0.4f * maxSpeed, 0.4f * maxSpeed)
         );
     }
 
@@ -26,6 +25,10 @@ public class Boid : MonoBehaviour
         MaintainSeparation();
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         StayInbounds();
+        if (rb.velocity.magnitude < maxSpeed)
+        {
+            rb.velocity += rb.velocity * adjustment * Time.deltaTime * 0.2f;
+        } 
     }
 
     private void FlyToCenterOfMass()
@@ -49,7 +52,7 @@ public class Boid : MonoBehaviour
         {
             center /= numBoidsInVision;
             Vector2 directionToCenter = (center - transform.position).normalized;
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity + adjustment * Time.deltaTime * directionToCenter, maxSpeed);
+            rb.velocity = rb.velocity + adjustment * Time.deltaTime * directionToCenter;
         }
     }
     private void MatchVelocity()
@@ -74,7 +77,8 @@ public class Boid : MonoBehaviour
         {
             avgVelocity /= numBoidsInVision;
             Vector2 velocityDiff = avgVelocity - myVelocity;
-            rb.velocity += adjustment * Time.deltaTime * velocityDiff;
+            Vector2 velocityDiffDirection = velocityDiff.normalized;
+            rb.velocity += adjustment * Time.deltaTime * velocityDiffDirection;
         }
     }
 
@@ -101,19 +105,20 @@ public class Boid : MonoBehaviour
     {
         if (transform.position.x > 8.0f)
         {
-            rb.velocity += new Vector2(-adjustment * Time.deltaTime, 0);
+            rb.velocity += new Vector2(-adjustment * Time.deltaTime * 10, 0);
         }
         else if (transform.position.x < -8.0f)
         {
-            rb.velocity += new Vector2(adjustment * Time.deltaTime, 0);
+            rb.velocity += new Vector2(adjustment * Time.deltaTime * 10, 0);
         }
+
         if (transform.position.y > 4.0f)
         {
-            rb.velocity += new Vector2(0, -adjustment * Time.deltaTime);
+            rb.velocity += new Vector2(0, -adjustment * Time.deltaTime * 10);
         }
         else if (transform.position.y < -4.0f)
         {
-            rb.velocity += new Vector2(0, adjustment * Time.deltaTime);
+            rb.velocity += new Vector2(0, adjustment * Time.deltaTime * 10);
         }
     }
 }

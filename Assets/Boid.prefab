@@ -100,8 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visionRadius: 1
   separationDistance: 0.3
-  maxSpeed: 5
-  adjustment: 0.3
+  maxSpeed: 3
+  adjustment: 0.5
 --- !u!50 &-6937601743286266387
 Rigidbody2D:
   serializedVersion: 4
