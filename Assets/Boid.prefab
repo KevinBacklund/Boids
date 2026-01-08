@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361fabe300c49ad409c7de81d282d9b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRadius: 1
+  visionRadius: 2
   separationDistance: 0.3
   maxSpeed: 3
   adjustment: 0.5

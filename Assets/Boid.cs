@@ -27,7 +27,7 @@ public class Boid : MonoBehaviour
         StayInbounds();
         if (rb.velocity.magnitude < maxSpeed)
         {
-            rb.velocity += rb.velocity * adjustment * Time.deltaTime * 0.2f;
+            rb.velocity += rb.velocity * adjustment * Time.deltaTime * 0.2f * (maxSpeed - rb.velocity.magnitude);
         } 
     }
 
@@ -52,7 +52,7 @@ public class Boid : MonoBehaviour
         {
             center /= numBoidsInVision;
             Vector2 directionToCenter = (center - transform.position).normalized;
-            rb.velocity = rb.velocity + adjustment * Time.deltaTime * directionToCenter;
+            rb.velocity = rb.velocity + adjustment * Time.deltaTime * directionToCenter * 0.5f;
         }
     }
     private void MatchVelocity()
@@ -78,7 +78,7 @@ public class Boid : MonoBehaviour
             avgVelocity /= numBoidsInVision;
             Vector2 velocityDiff = avgVelocity - myVelocity;
             Vector2 velocityDiffDirection = velocityDiff.normalized;
-            rb.velocity += adjustment * Time.deltaTime * velocityDiffDirection;
+            rb.velocity += adjustment * Time.deltaTime * velocityDiffDirection * 0.5f;
         }
     }
 
@@ -94,7 +94,7 @@ public class Boid : MonoBehaviour
                 if (distance < separationDistance)
                 {
                     Vector2 awayFromBoid = transform.position - otherBoid.transform.position;
-                    separationForce += awayFromBoid.normalized / distance;
+                    separationForce += awayFromBoid.normalized / (0.5f * distance);
                 }
             }
         }
